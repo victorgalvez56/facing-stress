@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { LoadingBar } from 'quasar'
 
 import routes from './routes'
 
@@ -21,6 +22,8 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
+
+  Router.afterEach(() => LoadingBar.stop())
 
   return Router
 }

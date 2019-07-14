@@ -1,13 +1,21 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+// path to use alias ./src path
+const path = require('path')
+
+// path to use environment variables
+const envparser = require('./env.parser')
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
       'i18n',
-      'axios'
+      'axios',
+      'components.loader',
+      'vee-validate'
     ],
 
     css: [
@@ -33,6 +41,7 @@ module.exports = function (ctx) {
       // all: true, // --- includes everything; for dev only!
 
       components: [
+        'QAvatar',
         'QLayout',
         'QHeader',
         'QDrawer',
@@ -41,33 +50,55 @@ module.exports = function (ctx) {
         'QToolbar',
         'QToolbarTitle',
         'QBtn',
+        'QBtnDropdown',
         'QIcon',
         'QList',
         'QItem',
         'QItemSection',
-        'QItemLabel'
+        'QItemLabel',
+        'QSpace'
       ],
 
       directives: [
-        'Ripple'
+        'Ripple',
+        'ClosePopup'
       ],
 
       // Quasar plugins
       plugins: [
-        'Notify'
-      ]
+        'Notify',
+        'LoadingBar',
+        'Meta'
+      ],
+      config: {
+        notify: {
+          position: 'top-right',
+          classes: 'text-h6 shadow-10'
+        },
+        loadingBar: {
+          color: 'warning',
+          size: '2px'
+        }
+      }
     },
 
     supportIE: true,
 
     build: {
+      env: envparser(), // build function to load environment variables
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
+        // alias to replace ./src/ path (like @vue/cli)
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias, // This adds the existing alias
+          '@': path.resolve(__dirname, './src/')
+        }
+
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,

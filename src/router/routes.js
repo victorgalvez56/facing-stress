@@ -1,10 +1,15 @@
+import homePage from './pages/home'
+import testPage from './pages/test'
+import aboutPage from './pages/about'
 
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MyLayout.vue'),
+    component: () => import('layouts/BaseLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      homePage,
+      testPage,
+      aboutPage
     ]
   }
 ]
