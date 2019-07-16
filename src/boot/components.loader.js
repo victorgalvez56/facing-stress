@@ -1,4 +1,7 @@
 // loading every component and layout on Vue.component
+import Vue from 'vue'
+import VueParticles from 'vue-particles'
+Vue.use(VueParticles)
 
 export default async ({ Vue }) => {
   // load all components dinamycally
